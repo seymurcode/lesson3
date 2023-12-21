@@ -35,7 +35,7 @@ class AddProductActivity : AppCompatActivity() {
     fun observeAll(){
         viewModel.addButtonClickObserver.observe(this){
             if(it){
-                val product : Product? =viewModel.addProduct()
+                val product : Product? =viewModel.createNewProduct()
 
                 val resultIntent = Intent()
                 resultIntent.putExtra("product", product)
@@ -45,8 +45,8 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         viewModel.errorObserver.observe(this){
-            if(it){
-                Toast.makeText(this,"Eksik bilgiler!", Toast.LENGTH_SHORT).show()
+            if(!it.isNullOrEmpty()){
+                Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -56,7 +56,7 @@ class AddProductActivity : AppCompatActivity() {
         viewModel.addButtonClickObserver.postValue(false)
 
         viewModel.errorObserver.removeObservers(this)
-        viewModel.errorObserver.postValue(false)
+        //viewModel.errorObserver.postValue(false)
     }
 
     override fun onResume() {

@@ -12,16 +12,18 @@ class AddProductViewModel : ViewModel() {
 
     var addButtonClickObserver = MutableLiveData<Boolean>()
 
-    var errorObserver = MutableLiveData<Boolean>()
+    var errorObserver = MutableLiveData<String>()
 
-    fun addProduct() : Product? {
-        addButtonClickObserver.postValue(true)
+    fun addProduct() {
 
-        if(productName.value.isNullOrEmpty() && productCode.value.isNullOrEmpty() && productDescription.value.isNullOrEmpty()){
-            errorObserver.postValue(true)
-            return null
+        if(productName.value.isNullOrEmpty() || productCode.value.isNullOrEmpty() || productDescription.value.isNullOrEmpty()){
+            errorObserver.postValue("Eksik bilgiler!")
+            return
         }
+        addButtonClickObserver.postValue(true)
+    }
 
-        return Product(productName.value.orEmpty(), productCode.value.orEmpty(), productDescription.value.orEmpty())
+    fun createNewProduct() : Product{
+        return Product(productName.value ?: "", productCode.value ?: "", productDescription.value ?: "")
     }
 }
